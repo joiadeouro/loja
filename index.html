@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="JoiadeOuro: joias e acessórios elegantes.">
+    <title>JoiadeOuro | Sua beleza, seu brilho</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <div class="aviso">
+        ✨ Elegância em cada detalhe | Bem-vindo à JoiadeOuro
+    </div>
+
+    <header class="cabecalho">
+        <a href="#inicio" class="logo">Joia<span>deOuro</span></a>
+
+        <button class="menu-toggle" id="menuToggle"
+                aria-label="Abrir menu">☰</button>
+
+        <nav id="menu">
+            <a href="#inicio">Início</a>
+            <a href="#categorias">Categorias</a>
+            <a href="#produtos">Produtos</a>
+            <a href="#sobre">Sobre nós</a>
+            <a href="#contato">Contato</a>
+        </nav>
+
+        <button class="botao-sacola" id="abrirCarrinho">
+            🛍 Sacola (<span id="quantidadeCarrinho">0</span>)
+        </button>
+    </header>
+
+    <main>
+        <section class="banner" id="inicio">
+            <div class="banner-texto">
+                <p class="subtitulo">A BELEZA ESTÁ NOS DETALHES</p>
+                <h1>Seu brilho.<br><span>Sua história.</span></h1>
+                <p>
+                    Descubra joias especiais que combinam com você
+                    e tornam cada momento inesquecível.
+                </p>
+                <a href="#produtos" class="botao">Ver coleção ↗</a>
+            </div>
+
+            <div class="banner-imagem">
+                <img
+                    src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=1000&q=85"
+                    alt="Joias douradas elegantes">
+            </div>
+        </section>
+
+        <section class="categorias" id="categorias">
+            <p class="subtitulo">ENCONTRE SEU ESTILO</p>
+            <h2>Nossas <span>categorias</span></h2>
+
+            <div class="categorias-lista">
+                <button data-categoria="Anéis">Anéis</button>
+                <button data-categoria="Colares">Colares</button>
+                <button data-categoria="Brincos">Brincos</button>
+                <button data-categoria="Pulseiras">Pulseiras</button>
+                <button data-categoria="Todos">Todos os produtos</button>
+            </div>
+        </section>
+
+        <section class="produtos" id="produtos">
+            <p class="subtitulo">SELEÇÃO ESPECIAL</p>
+            <h2>Nossos <span>produtos</span></h2>
+
+            <div class="lista-produtos" id="listaProdutos"></div>
+        </section>
+
+        <section class="sobre" id="sobre">
+            <div>
+                <p class="subtitulo">NOSSA ESSÊNCIA</p>
+                <h2>Mais do que joias,<br><span>memórias para guardar.</span></h2>
+            </div>
+            <p>
+                A JoiadeOuro nasceu para valorizar a beleza dos detalhes.
+                Selecionamos peças elegantes para presentear, celebrar
+                momentos especiais e expressar a sua personalidade.
+            </p>
+        </section>
+
+        <section class="beneficios">
+            <div>✧ <strong>Qualidade</strong><p>Peças selecionadas</p></div>
+            <div>◇ <strong>Atendimento</strong><p>Estamos aqui para ajudar</p></div>
+            <div>♡ <strong>Presentes especiais</strong><p>Surpreenda quem você ama</p></div>
+        </section>
+    </main>
+
+    <footer id="contato">
+        <a href="#inicio" class="logo">Joia<span>deOuro</span></a>
+        <p>Um toque de brilho para a sua história.</p>
+        <a id="linkWhatsApp" class="botao" href="#" target="_blank"
+           rel="noopener">Fale conosco pelo WhatsApp</a>
+        <p class="direitos">
+            © <span id="ano"></span> JoiadeOuro. Todos os direitos reservados.
+        </p>
+    </footer>
+
+    <div class="fundo-carrinho" id="fundoCarrinho"></div>
+
+    <aside class="carrinho" id="carrinho" aria-label="Carrinho de compras">
+        <div class="carrinho-topo">
+            <h2>Sua sacola</h2>
+            <button id="fecharCarrinho" aria-label="Fechar carrinho">✕</button>
+        </div>
+
+        <div id="itensCarrinho"></div>
+
+        <div class="carrinho-rodape">
+            <h3>Total: <span id="totalCarrinho">R$ 0,00</span></h3>
+            <button class="botao finalizar" id="finalizarCompra">
+                Finalizar pelo WhatsApp
+            </button>
+        </div>
+    </aside>
+
+</body>
+</html>
