@@ -5,10 +5,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="JoiadeOuro: joias e acessórios elegantes.">
+
     <title>JoiadeOuro | Sua beleza, seu brilho</title>
+
     <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+    <script src="js/firebase-config.js" defer></script>
     <script src="script.js" defer></script>
+    <script src="js/main.js" defer></script>
+
+    <style>
+        .acesso-conta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .modal {
+            color: #222;
+        }
+
+        .modal input {
+            margin-bottom: 12px;
+        }
+
+        .modo-escuro {
+            background: #181818 !important;
+            color: #f5f5f5 !important;
+        }
+
+        .modo-escuro header,
+        .modo-escuro section,
+        .modo-escuro footer {
+            color: inherit;
+        }
+
+        .modo-escuro .card {
+            background: #292929;
+            color: white;
+        }
+
+        .botao-conta {
+            border: 1px solid currentColor;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .controles-loja {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .controles-loja input {
+            padding: 10px;
+            max-width: 200px;
+        }
+
+        .lista-produtos {
+            min-height: 80px;
+        }
+    </style>
 </head>
+
 <body>
 
     <div class="aviso">
@@ -29,20 +101,35 @@
             <a href="#contato">Contato</a>
         </nav>
 
-        <button class="botao-sacola" id="abrirCarrinho">
-            🛍 Sacola (<span id="quantidadeCarrinho">0</span>)
-        </button>
+        <div class="acesso-conta">
+            <button class="botao-conta" id="btn-login"
+                    onclick="abrirLogin()">Entrar</button>
+
+            <button class="botao-conta" id="btn-logout"
+                    onclick="logout()" hidden>Sair</button>
+
+            <button class="botao-conta" id="btn-admin"
+                    onclick="window.location.href='admin.html'"
+                    hidden>Admin</button>
+
+            <button class="botao-sacola" id="abrirCarrinho">
+                🛍 Sacola (<span id="quantidadeCarrinho">0</span>)
+            </button>
+        </div>
     </header>
 
     <main>
         <section class="banner" id="inicio">
             <div class="banner-texto">
                 <p class="subtitulo">A BELEZA ESTÁ NOS DETALHES</p>
+
                 <h1>Seu brilho.<br><span>Sua história.</span></h1>
+
                 <p>
                     Descubra joias especiais que combinam com você
                     e tornam cada momento inesquecível.
                 </p>
+
                 <a href="#produtos" class="botao">Ver coleção ↗</a>
             </div>
 
@@ -70,14 +157,33 @@
             <p class="subtitulo">SELEÇÃO ESPECIAL</p>
             <h2>Nossos <span>produtos</span></h2>
 
+            <div class="controles-loja">
+                <input type="text" id="busca"
+                       placeholder="Buscar por nome">
+
+                <input type="number" id="precoMin"
+                       placeholder="Preço mínimo" min="0">
+
+                <input type="number" id="precoMax"
+                       placeholder="Preço máximo" min="0">
+
+                <button class="botao" type="button"
+                        onclick="aplicarFiltros()">Filtrar</button>
+            </div>
+
+            <!-- Área para os produtos -->
             <div class="lista-produtos" id="listaProdutos"></div>
         </section>
 
         <section class="sobre" id="sobre">
             <div>
                 <p class="subtitulo">NOSSA ESSÊNCIA</p>
-                <h2>Mais do que joias,<br><span>memórias para guardar.</span></h2>
+                <h2>
+                    Mais do que joias,<br>
+                    <span>memórias para guardar.</span>
+                </h2>
             </div>
+
             <p>
                 A JoiadeOuro nasceu para valorizar a beleza dos detalhes.
                 Selecionamos peças elegantes para presentear, celebrar
@@ -86,39 +192,147 @@
         </section>
 
         <section class="beneficios">
-            <div>✧ <strong>Qualidade</strong><p>Peças selecionadas</p></div>
-            <div>◇ <strong>Atendimento</strong><p>Estamos aqui para ajudar</p></div>
-            <div>♡ <strong>Presentes especiais</strong><p>Surpreenda quem você ama</p></div>
+            <div>
+                ✧ <strong>Qualidade</strong>
+                <p>Peças selecionadas</p>
+            </div>
+
+            <div>
+                ◇ <strong>Atendimento</strong>
+                <p>Estamos aqui para ajudar</p>
+            </div>
+
+            <div>
+                ♡ <strong>Presentes especiais</strong>
+                <p>Surpreenda quem você ama</p>
+            </div>
+        </section>
+
+        <section class="text-center py-4">
+            <label>
+                <input type="checkbox" id="modoEscuroToggle"
+                       onchange="alternarModoEscuro()">
+                Modo escuro
+            </label>
         </section>
     </main>
 
     <footer id="contato">
         <a href="#inicio" class="logo">Joia<span>deOuro</span></a>
+
         <p>Um toque de brilho para a sua história.</p>
-        <a id="linkWhatsApp" class="botao" href="#" target="_blank"
-           rel="noopener">Fale conosco pelo WhatsApp</a>
+
+        <a id="linkWhatsApp" class="botao" href="#"
+           target="_blank" rel="noopener">
+            Fale conosco pelo WhatsApp
+        </a>
+
         <p class="direitos">
-            © <span id="ano"></span> JoiadeOuro. Todos os direitos reservados.
+            © <span id="ano"></span> JoiadeOuro.
+            Todos os direitos reservados.
         </p>
     </footer>
 
+    <!-- Carrinho -->
     <div class="fundo-carrinho" id="fundoCarrinho"></div>
 
-    <aside class="carrinho" id="carrinho" aria-label="Carrinho de compras">
+    <aside class="carrinho" id="carrinho"
+           aria-label="Carrinho de compras">
+
         <div class="carrinho-topo">
             <h2>Sua sacola</h2>
-            <button id="fecharCarrinho" aria-label="Fechar carrinho">✕</button>
+            <button id="fecharCarrinho"
+                    aria-label="Fechar carrinho">✕</button>
         </div>
 
         <div id="itensCarrinho"></div>
 
         <div class="carrinho-rodape">
-            <h3>Total: <span id="totalCarrinho">R$ 0,00</span></h3>
-            <button class="botao finalizar" id="finalizarCompra">
+            <h3>
+                Total:
+                <span id="totalCarrinho">R$ 0,00</span>
+            </h3>
+
+            <button class="botao finalizar"
+                    id="finalizarCompra">
                 Finalizar pelo WhatsApp
             </button>
         </div>
     </aside>
+
+    <!-- Modal de login e cadastro -->
+    <div class="modal fade" id="loginModal"
+         tabindex="-1" aria-labelledby="loginModalTitulo"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalTitulo">
+                        Acesso à JoiadeOuro
+                    </h5>
+
+                    <button class="btn-close" type="button"
+                            data-bs-dismiss="modal"
+                            aria-label="Fechar"></button>
+                </div>
+
+                <div class="modal-body">
+                    <h6>Entrar na conta</h6>
+
+                    <input class="form-control" id="email"
+                           type="email" placeholder="Seu e-mail"
+                           autocomplete="email">
+
+                    <input class="form-control" id="senha"
+                           type="password" placeholder="Sua senha"
+                           autocomplete="current-password">
+
+                    <button class="btn btn-primary w-100 mb-3"
+                            type="button" onclick="login()">
+                        Entrar
+                    </button>
+
+                    <hr>
+
+                    <h6>Criar uma conta</h6>
+
+                    <input class="form-control" id="emailCadastro"
+                           type="email" placeholder="Novo e-mail"
+                           autocomplete="email">
+
+                    <input class="form-control" id="senhaCadastro"
+                           type="password" placeholder="Crie uma senha"
+                           autocomplete="new-password">
+
+                    <button class="btn btn-success w-100"
+                            type="button" onclick="cadastrar()">
+                        Cadastrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function alternarModoEscuro() {
+            document.body.classList.toggle(
+                'modo-escuro',
+                document.getElementById('modoEscuroToggle').checked
+            );
+        }
+
+        function abrirLogin() {
+            const modalElemento = document.getElementById('loginModal');
+            bootstrap.Modal.getOrCreateInstance(modalElemento).show();
+        }
+
+        document.getElementById('ano').textContent =
+            new Date().getFullYear();
+    </script>
 
 </body>
 </html>
